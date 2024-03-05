@@ -1,0 +1,8 @@
+2024-03-05 22:09:15,169 - Started
+2024-03-05 22:09:48,972 - Get request to page https://api-gateway.juno.lenskart.com/v2/products/category/8416?page-size=1000&page=0 returned status code of 200
+2024-03-05 22:10:30,671 - Response from page https://api-gateway.juno.lenskart.com/v2/products/category/8416?page-size=1000&page=0 written to ./pages/product_list_pages/mens_classic_eyeglasses_bestsellers.json
+2024-03-05 22:11:52,610 - Product details from page https://api-gateway.juno.lenskart.com/v2/products/category/8416?page-size=1000&page=0 converted to data frame and csv - mens_classic_eyeglasses_bestsellers_csv.csv
+2024-03-05 22:12:30,678 - Product details from page https://api-gateway.juno.lenskart.com/v2/products/category/8416?page-size=1000&page=0 converted to data frame and csv - ./csvs/mens_classic_eyeglasses_bestsellers_csv.csv
+2024-03-05 22:13:20,687 - Get request to page https://api-gateway.juno.lenskart.com/v2/products/category/8080?page-size=684&page=0 returned status code of 200
+2024-03-05 22:13:47,497 - Response from page https://api-gateway.juno.lenskart.com/v2/products/category/8080?page-size=684&page=0 written to ./pages/product_list_pages/mens_premium_eyeglasses_bestsellers.json
+2024-03-05 22:14:44,079 - Product details from page https://api-gateway.juno.lenskart.com/v2/products/category/8080?page-size=684&page=0 converted to data frame and csv - ./csvs/mens_premium_eyeglasses_bestsellers_csv.csv
