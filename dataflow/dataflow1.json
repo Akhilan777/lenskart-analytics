@@ -15,46 +15,46 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "DelimitedText4",
+						"referenceName": "AzureSqlTable7",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
 				},
 				{
 					"dataset": {
-						"referenceName": "DelimitedText4",
+						"referenceName": "AzureSqlTable8",
 						"type": "DatasetReference"
 					},
 					"name": "sink2"
 				},
 				{
 					"dataset": {
-						"referenceName": "DelimitedText4",
+						"referenceName": "AzureSqlTable6",
 						"type": "DatasetReference"
 					},
 					"name": "sink3"
 				},
 				{
 					"dataset": {
-						"referenceName": "DelimitedText4",
+						"referenceName": "AzureSqlTable5",
 						"type": "DatasetReference"
 					},
 					"name": "sink4"
 				},
 				{
 					"dataset": {
-						"referenceName": "DelimitedText4",
+						"referenceName": "AzureSqlTable4",
 						"type": "DatasetReference"
 					},
 					"name": "sink5"
+				},
+				{
+					"name": "sink6"
 				}
 			],
 			"transformations": [
 				{
-					"name": "topBrands"
-				},
-				{
-					"name": "rank1"
+					"name": "topSubcoll"
 				},
 				{
 					"name": "topFrames"
@@ -67,6 +67,9 @@
 				},
 				{
 					"name": "likedBrands"
+				},
+				{
+					"name": "aggregate1"
 				}
 			],
 			"scriptLines": [
@@ -105,38 +108,84 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> source1",
-				"source1 aggregate(groupBy(brand_name),",
-				"     AveragePurchase = ceil(avg(purchaseCount1))) ~> topBrands",
-				"topBrands rank(desc(AveragePurchase, true),",
-				"     output(top_seller as long)) ~> rank1",
+				"source1 aggregate(groupBy(subCollection),",
+				"     avgSales = ceil(avg(purchaseCount1)),",
+				"          avgRating = avg(avgRating)) ~> topSubcoll",
 				"source1 aggregate(groupBy(frametype),",
-				"     purchaseCount1 = ceil(avg(purchaseCount1))) ~> topFrames",
+				"     avgSales = ceil(avg(purchaseCount1)),",
+				"          avgRating = avg(avgRating)) ~> topFrames",
 				"source1 aggregate(groupBy(color),",
-				"     purchaseCount1 = ceil(avg(purchaseCount1))) ~> mostLovedColor",
+				"     avgSales = ceil(avg(purchaseCount1)),",
+				"          avgRating = avg(avgRating)) ~> mostLovedColor",
 				"source1 aggregate(groupBy(size),",
-				"     productname1 = ceil(avg(purchaseCount1))) ~> topSizeSell",
+				"     avgSales = ceil(avg(purchaseCount1)),",
+				"          avgRating = avg(avgRating)) ~> topSizeSell",
 				"source1 aggregate(groupBy(brand_name),",
-				"     avgRating = avg(avgRating)) ~> likedBrands",
+				"     avgRating = avg(avgRating),",
+				"          avgSales = ceil(avg(purchaseCount1))) ~> likedBrands",
+				"source1 aggregate(groupBy(model_name),",
+				"     avgRating = avg(avgRating),",
+				"          avgSales = ceil(avg(purchaseCount1))) ~> aggregate1",
 				"topFrames sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     recreate:true,",
+				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink1",
-				"rank1 sink(allowSchemaDrift: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink1",
+				"topSubcoll sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     recreate:true,",
+				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink2",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink2",
 				"mostLovedColor sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     recreate:true,",
+				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink3",
+				"     skipDuplicateMapOutputs: true,",
+				"     saveOrder: 1,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink3",
 				"topSizeSell sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     recreate:true,",
+				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink4",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink4",
 				"likedBrands sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     recreate:true,",
+				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink5"
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink5",
+				"aggregate1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink6"
 			]
 		}
 	}
