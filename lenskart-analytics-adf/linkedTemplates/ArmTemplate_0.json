@@ -47,6 +47,27 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/azure_sql_customer_dimension_table_akhilan')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabaseLinkedService",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "akhilan_transformation",
+					"table": "customer_dimension_id_and_pincode"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabaseLinkedService')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/azure_sql_customers_table')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -354,6 +375,131 @@
 				"[concat(variables('factoryId'), '/datasets/azure_sql_customers_table')]",
 				"[concat(variables('factoryId'), '/datasets/transaction_blob_dataset')]",
 				"[concat(variables('factoryId'), '/datasets/azure_sql_transactions_table')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/customer_dimension_id_and_pincode_dataflow')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "azure_sql_customers_table",
+								"type": "DatasetReference"
+							},
+							"name": "customersSource"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "azure_sql_customer_dimension_table_akhilan",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "derivePinCode"
+						},
+						{
+							"name": "castPincode",
+							"description": "Cast pincode from string to integer"
+						},
+						{
+							"name": "selectCustIdandPincode"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          customer_id as string,",
+						"          first_name as string,",
+						"          last_name as string,",
+						"          email as string,",
+						"          phone_number as string,",
+						"          address as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> customersSource",
+						"customersSource derive(pincode = substring(address, length(address) - 5, 6)) ~> derivePinCode",
+						"derivePinCode cast(output(",
+						"          pincode as integer",
+						"     ),",
+						"     errors: true) ~> castPincode",
+						"castPincode select(mapColumn(",
+						"          customer_id,",
+						"          pincode",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> selectCustIdandPincode",
+						"selectCustIdandPincode sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/azure_sql_customers_table')]",
+				"[concat(variables('factoryId'), '/datasets/azure_sql_customer_dimension_table_akhilan')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/customer_dimension_id_and_pincode_pipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Customer Id and Pincode Dimension Table",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "customer_dimension_id_and_pincode_dataflow",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"customersSource": {},
+									"sink1": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/customer_dimension_id_and_pincode_dataflow')]"
 			]
 		}
 	]
