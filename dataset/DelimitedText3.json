@@ -1,0 +1,212 @@
+{
+	"name": "DelimitedText3",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorageLinkedService",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "classic_sunglass_bestsellers_updated.csv",
+				"container": "lenskart-analytics"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "id",
+				"type": "String"
+			},
+			{
+				"name": "color",
+				"type": "String"
+			},
+			{
+				"name": "occasion",
+				"type": "String"
+			},
+			{
+				"name": "size",
+				"type": "String"
+			},
+			{
+				"name": "width",
+				"type": "String"
+			},
+			{
+				"name": "brand_name",
+				"type": "String"
+			},
+			{
+				"name": "model_name",
+				"type": "String"
+			},
+			{
+				"name": "prices",
+				"type": "String"
+			},
+			{
+				"name": "tags",
+				"type": "String"
+			},
+			{
+				"name": "classification",
+				"type": "String"
+			},
+			{
+				"name": "wishlistCount",
+				"type": "String"
+			},
+			{
+				"name": "purchaseCount",
+				"type": "String"
+			},
+			{
+				"name": "avgRating",
+				"type": "String"
+			},
+			{
+				"name": "totalNoOfRatings",
+				"type": "String"
+			},
+			{
+				"name": "offerName",
+				"type": "String"
+			},
+			{
+				"name": "qty",
+				"type": "String"
+			},
+			{
+				"name": "subCollection",
+				"type": "String"
+			},
+			{
+				"name": "subCollectionId",
+				"type": "String"
+			},
+			{
+				"name": "isCashbackApplicable",
+				"type": "String"
+			},
+			{
+				"name": "searchProductName",
+				"type": "String"
+			},
+			{
+				"name": "productname1",
+				"type": "String"
+			},
+			{
+				"name": "fullname1",
+				"type": "String"
+			},
+			{
+				"name": "framedetails1",
+				"type": "String"
+			},
+			{
+				"name": "sellerlabel1",
+				"type": "String"
+			},
+			{
+				"name": "productmodelname",
+				"type": "String"
+			},
+			{
+				"name": "frametype1",
+				"type": "String"
+			},
+			{
+				"name": "productrating1",
+				"type": "String"
+			},
+			{
+				"name": "showpurchasecount1",
+				"type": "String"
+			},
+			{
+				"name": "purchasecount1",
+				"type": "String"
+			},
+			{
+				"name": "showwishlistcount1",
+				"type": "String"
+			},
+			{
+				"name": "wishlistcount1",
+				"type": "String"
+			},
+			{
+				"name": "productquantity1",
+				"type": "String"
+			},
+			{
+				"name": "iscoloroptionextra",
+				"type": "String"
+			},
+			{
+				"name": "type1",
+				"type": "String"
+			},
+			{
+				"name": "price1",
+				"type": "String"
+			},
+			{
+				"name": "coloroptions",
+				"type": "String"
+			},
+			{
+				"name": "offertext1",
+				"type": "String"
+			},
+			{
+				"name": "brandname1",
+				"type": "String"
+			},
+			{
+				"name": "generalproductinfo",
+				"type": "String"
+			},
+			{
+				"name": "technicalproductinfo",
+				"type": "String"
+			},
+			{
+				"name": "reviews",
+				"type": "String"
+			},
+			{
+				"name": "specifications1",
+				"type": "String"
+			},
+			{
+				"name": "richcontent",
+				"type": "String"
+			},
+			{
+				"name": "istryonenabled",
+				"type": "String"
+			},
+			{
+				"name": "totalnoofratings1",
+				"type": "String"
+			},
+			{
+				"name": "offerdetails1",
+				"type": "String"
+			},
+			{
+				"name": "subcategories1",
+				"type": "String"
+			}
+		]
+	}
+}
