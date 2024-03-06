@@ -1,0 +1,16 @@
+{
+	"name": "HariTopSellingBrand",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "HariAzureSqlDatabase",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "hari",
+			"table": "topsellingbrand"
+		}
+	}
+}
