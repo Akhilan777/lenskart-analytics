@@ -1,0 +1,16 @@
+{
+	"name": "azure_sql_fact_table_metric_products_sold_per_pincode",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabaseLinkedService",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "akhilan_transformation",
+			"table": "fact_metric_orders_per_pincode"
+		}
+	}
+}

@@ -1,21 +1,21 @@
 {
-	"name": "customer_dimension_id_and_pincode_dataflow",
+	"name": "transaction_dimension_custId_and_pincode_dataflow",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "azure_sql_customers_table",
+						"referenceName": "azure_sql_transactions_table",
 						"type": "DatasetReference"
 					},
-					"name": "customersSource"
+					"name": "transactionsSource"
 				}
 			],
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "azure_sql_customer_dimension_table_akhilan",
+						"referenceName": "azure_sql_transactions_dimension_id_and_pincode_table",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
@@ -23,33 +23,35 @@
 			],
 			"transformations": [
 				{
-					"name": "derivePinCode"
+					"name": "select1"
 				},
 				{
-					"name": "selectCustIdandPincode"
+					"name": "cast1"
 				}
 			],
 			"scriptLines": [
 				"source(output(",
 				"          customer_id as string,",
-				"          first_name as string,",
-				"          last_name as string,",
-				"          email as string,",
-				"          phone_number as string,",
-				"          address as string",
+				"          product_id as string,",
+				"          quantity as string,",
+				"          transaction_date as string,",
+				"          transaction_id as string",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> customersSource",
-				"customersSource derive(pincode = substring(address, length(address) - 5, 6)) ~> derivePinCode",
-				"derivePinCode select(mapColumn(",
+				"     format: 'table') ~> transactionsSource",
+				"transactionsSource select(mapColumn(",
 				"          customer_id,",
-				"          pincode",
+				"          quantity",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> selectCustIdandPincode",
-				"selectCustIdandPincode sink(allowSchemaDrift: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1 cast(output(",
+				"          quantity as integer",
+				"     ),",
+				"     errors: true) ~> cast1",
+				"cast1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
 				"     insertable:true,",

@@ -1,0 +1,76 @@
+{
+	"name": "metric_orders_per_pincode_dataflow",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "azure_sql_customer_dimension_table_akhilan",
+						"type": "DatasetReference"
+					},
+					"name": "CustomerDimensionSource"
+				},
+				{
+					"dataset": {
+						"referenceName": "azure_sql_transactions_dimension_id_and_pincode_table",
+						"type": "DatasetReference"
+					},
+					"name": "transactionsSource"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "azure_sql_fact_table_metric_products_sold_per_pincode",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "join1"
+				},
+				{
+					"name": "aggregate1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          customer_id as string,",
+				"          pincode as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> CustomerDimensionSource",
+				"source(output(",
+				"          customer_id as string,",
+				"          quantity as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> transactionsSource",
+				"transactionsSource, CustomerDimensionSource join(transactionsSource@customer_id == CustomerDimensionSource@customer_id,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join1",
+				"join1 aggregate(groupBy(pincode),",
+				"     quantity = sum(quantity)) ~> aggregate1",
+				"aggregate1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+			]
+		}
+	}
+}

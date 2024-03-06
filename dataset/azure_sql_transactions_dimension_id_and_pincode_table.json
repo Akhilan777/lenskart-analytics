@@ -1,0 +1,16 @@
+{
+	"name": "azure_sql_transactions_dimension_id_and_pincode_table",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabaseLinkedService",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "akhilan_transformation",
+			"table": "transactions_dimension_id_and_pincode"
+		}
+	}
+}
