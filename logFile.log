@@ -6,3 +6,16 @@
 2024-03-05 22:13:20,687 - Get request to page https://api-gateway.juno.lenskart.com/v2/products/category/8080?page-size=684&page=0 returned status code of 200
 2024-03-05 22:13:47,497 - Response from page https://api-gateway.juno.lenskart.com/v2/products/category/8080?page-size=684&page=0 written to ./pages/product_list_pages/mens_premium_eyeglasses_bestsellers.json
 2024-03-05 22:14:44,079 - Product details from page https://api-gateway.juno.lenskart.com/v2/products/category/8080?page-size=684&page=0 converted to data frame and csv - ./csvs/mens_premium_eyeglasses_bestsellers_csv.csv
+2024-03-06 09:28:48,000 - Started
+2024-03-06 09:33:52,435 - Get request to page https://api-gateway.juno.lenskart.com/v2/products/category/11261?page-size=26&page=0 returned status code of 200
+2024-03-06 09:33:54,960 - Response from page https://api-gateway.juno.lenskart.com/v2/products/category/11261?page-size=26&page=0 written to ./pages/product_list_pages/kids_classic_eyeglasses_bestsellers.json
+2024-03-06 09:34:52,892 - Product details from page https://api-gateway.juno.lenskart.com/v2/products/category/11261?page-size=26&page=0 converted to data frame and csv - ./csvs/kids_classic_eyeglasses_bestsellers_csv.csv
+2024-03-06 09:37:06,898 - Get request to page https://api-gateway.juno.lenskart.com/v2/products/category/8416?page-size=1000&page=0 returned status code of 200
+2024-03-06 09:37:08,080 - Response from page https://api-gateway.juno.lenskart.com/v2/products/category/8416?page-size=1000&page=0 written to ./pages/product_list_pages/mens_classic_eyeglasses_bestsellers.json
+2024-03-06 09:37:13,827 - Product details from page https://api-gateway.juno.lenskart.com/v2/products/category/8416?page-size=1000&page=0 converted to data frame and csv - ./csvs/mens_classic_eyeglasses_bestsellers_csv.csv
+2024-03-06 09:37:18,076 - Get request to page https://api-gateway.juno.lenskart.com/v2/products/category/8080?page-size=684&page=0 returned status code of 200
+2024-03-06 09:37:20,408 - Response from page https://api-gateway.juno.lenskart.com/v2/products/category/8080?page-size=684&page=0 written to ./pages/product_list_pages/mens_premium_eyeglasses_bestsellers.json
+2024-03-06 09:37:24,184 - Product details from page https://api-gateway.juno.lenskart.com/v2/products/category/8080?page-size=684&page=0 converted to data frame and csv - ./csvs/mens_premium_eyeglasses_bestsellers_csv.csv
+2024-03-06 09:37:27,788 - Get request to page https://api-gateway.juno.lenskart.com/v2/products/category/11261?page-size=26&page=0 returned status code of 200
+2024-03-06 09:37:30,169 - Response from page https://api-gateway.juno.lenskart.com/v2/products/category/11261?page-size=26&page=0 written to ./pages/product_list_pages/kids_classic_eyeglasses_bestsellers.json
+2024-03-06 09:37:32,045 - Product details from page https://api-gateway.juno.lenskart.com/v2/products/category/11261?page-size=26&page=0 converted to data frame and csv - ./csvs/kids_classic_eyeglasses_bestsellers_csv.csv
