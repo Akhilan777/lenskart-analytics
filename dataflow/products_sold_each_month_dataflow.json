@@ -1,0 +1,67 @@
+{
+	"name": "products_sold_each_month_dataflow",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "azure_sql_transactions_table",
+						"type": "DatasetReference"
+					},
+					"name": "transactionsSource"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "azure_sql_fact_metric_products_sold_per_month_table",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "cast1"
+				},
+				{
+					"name": "aggregate1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          customer_id as string,",
+				"          product_id as string,",
+				"          quantity as string,",
+				"          transaction_date as string,",
+				"          transaction_id as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> transactionsSource",
+				"transactionsSource derive(transaction_my = substring(transaction_date, 1, 7)) ~> derivedColumn1",
+				"derivedColumn1 cast(output(",
+				"          quantity as integer",
+				"     ),",
+				"     errors: true) ~> cast1",
+				"cast1 aggregate(groupBy(transaction_my),",
+				"     quantity = sum(quantity)) ~> aggregate1",
+				"aggregate1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+			]
+		}
+	}
+}

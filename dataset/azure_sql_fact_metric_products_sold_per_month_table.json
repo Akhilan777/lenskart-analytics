@@ -1,0 +1,16 @@
+{
+	"name": "azure_sql_fact_metric_products_sold_per_month_table",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabaseLinkedService",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "akhilan_transformation",
+			"table": "products_sold_per_month"
+		}
+	}
+}
