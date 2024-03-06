@@ -49,6 +49,10 @@
 					"name": "sink5"
 				},
 				{
+					"dataset": {
+						"referenceName": "AzureSqlTable9",
+						"type": "DatasetReference"
+					},
 					"name": "sink6"
 				}
 			],
@@ -69,7 +73,7 @@
 					"name": "likedBrands"
 				},
 				{
-					"name": "aggregate1"
+					"name": "topModels"
 				}
 			],
 			"scriptLines": [
@@ -125,7 +129,7 @@
 				"          avgSales = ceil(avg(purchaseCount1))) ~> likedBrands",
 				"source1 aggregate(groupBy(model_name),",
 				"     avgRating = avg(avgRating),",
-				"          avgSales = ceil(avg(purchaseCount1))) ~> aggregate1",
+				"          avgSales = ceil(avg(purchaseCount1))) ~> topModels",
 				"topFrames sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
@@ -158,7 +162,7 @@
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     saveOrder: 1,",
+				"     saveOrder: 0,",
 				"     errorHandlingOption: 'stopOnFirstError') ~> sink3",
 				"topSizeSell sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
@@ -182,10 +186,17 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     errorHandlingOption: 'stopOnFirstError') ~> sink5",
-				"aggregate1 sink(allowSchemaDrift: true,",
+				"topModels sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     recreate:true,",
+				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink6"
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink6"
 			]
 		}
 	}
