@@ -1,5 +1,5 @@
 {
-	"name": "AzureSqlTable1",
+	"name": "eyeglassinput",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "HariAzureSqlDatabase",
