@@ -47,6 +47,244 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabaseLinkedService",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "raw",
+					"table": "sunglasses"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabaseLinkedService')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DelimitedText3')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorageLinkedService",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "classic_sunglass_bestsellers_updated.csv",
+						"container": "lenskart-analytics"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "id",
+						"type": "String"
+					},
+					{
+						"name": "color",
+						"type": "String"
+					},
+					{
+						"name": "occasion",
+						"type": "String"
+					},
+					{
+						"name": "size",
+						"type": "String"
+					},
+					{
+						"name": "width",
+						"type": "String"
+					},
+					{
+						"name": "brand_name",
+						"type": "String"
+					},
+					{
+						"name": "model_name",
+						"type": "String"
+					},
+					{
+						"name": "prices",
+						"type": "String"
+					},
+					{
+						"name": "tags",
+						"type": "String"
+					},
+					{
+						"name": "classification",
+						"type": "String"
+					},
+					{
+						"name": "wishlistCount",
+						"type": "String"
+					},
+					{
+						"name": "purchaseCount",
+						"type": "String"
+					},
+					{
+						"name": "avgRating",
+						"type": "String"
+					},
+					{
+						"name": "totalNoOfRatings",
+						"type": "String"
+					},
+					{
+						"name": "offerName",
+						"type": "String"
+					},
+					{
+						"name": "qty",
+						"type": "String"
+					},
+					{
+						"name": "subCollection",
+						"type": "String"
+					},
+					{
+						"name": "subCollectionId",
+						"type": "String"
+					},
+					{
+						"name": "isCashbackApplicable",
+						"type": "String"
+					},
+					{
+						"name": "searchProductName",
+						"type": "String"
+					},
+					{
+						"name": "productname1",
+						"type": "String"
+					},
+					{
+						"name": "fullname1",
+						"type": "String"
+					},
+					{
+						"name": "framedetails1",
+						"type": "String"
+					},
+					{
+						"name": "sellerlabel1",
+						"type": "String"
+					},
+					{
+						"name": "productmodelname",
+						"type": "String"
+					},
+					{
+						"name": "frametype1",
+						"type": "String"
+					},
+					{
+						"name": "productrating1",
+						"type": "String"
+					},
+					{
+						"name": "showpurchasecount1",
+						"type": "String"
+					},
+					{
+						"name": "purchasecount1",
+						"type": "String"
+					},
+					{
+						"name": "showwishlistcount1",
+						"type": "String"
+					},
+					{
+						"name": "wishlistcount1",
+						"type": "String"
+					},
+					{
+						"name": "productquantity1",
+						"type": "String"
+					},
+					{
+						"name": "iscoloroptionextra",
+						"type": "String"
+					},
+					{
+						"name": "type1",
+						"type": "String"
+					},
+					{
+						"name": "price1",
+						"type": "String"
+					},
+					{
+						"name": "coloroptions",
+						"type": "String"
+					},
+					{
+						"name": "offertext1",
+						"type": "String"
+					},
+					{
+						"name": "brandname1",
+						"type": "String"
+					},
+					{
+						"name": "generalproductinfo",
+						"type": "String"
+					},
+					{
+						"name": "technicalproductinfo",
+						"type": "String"
+					},
+					{
+						"name": "reviews",
+						"type": "String"
+					},
+					{
+						"name": "specifications1",
+						"type": "String"
+					},
+					{
+						"name": "richcontent",
+						"type": "String"
+					},
+					{
+						"name": "istryonenabled",
+						"type": "String"
+					},
+					{
+						"name": "totalnoofratings1",
+						"type": "String"
+					},
+					{
+						"name": "offerdetails1",
+						"type": "String"
+					},
+					{
+						"name": "subcategories1",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorageLinkedService')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/azure_sql_customer_dimension_table_akhilan')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -82,6 +320,48 @@
 				"typeProperties": {
 					"schema": "raw",
 					"table": "customers"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabaseLinkedService')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/azure_sql_fact_table_metric_products_sold_per_pincode')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabaseLinkedService",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "akhilan_transformation",
+					"table": "fact_metric_orders_per_pincode"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabaseLinkedService')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/azure_sql_transactions_dimension_id_and_pincode_table')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabaseLinkedService",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "akhilan_transformation",
+					"table": "transactions_dimension_id_and_pincode"
 				}
 			},
 			"dependsOn": [
@@ -407,10 +687,6 @@
 							"name": "derivePinCode"
 						},
 						{
-							"name": "castPincode",
-							"description": "Cast pincode from string to integer"
-						},
-						{
 							"name": "selectCustIdandPincode"
 						}
 					],
@@ -428,11 +704,7 @@
 						"     isolationLevel: 'READ_UNCOMMITTED',",
 						"     format: 'table') ~> customersSource",
 						"customersSource derive(pincode = substring(address, length(address) - 5, 6)) ~> derivePinCode",
-						"derivePinCode cast(output(",
-						"          pincode as integer",
-						"     ),",
-						"     errors: true) ~> castPincode",
-						"castPincode select(mapColumn(",
+						"derivePinCode select(mapColumn(",
 						"          customer_id,",
 						"          pincode",
 						"     ),",
@@ -454,6 +726,162 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/azure_sql_customers_table')]",
 				"[concat(variables('factoryId'), '/datasets/azure_sql_customer_dimension_table_akhilan')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/metric_orders_per_pincode_dataflow')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "azure_sql_customer_dimension_table_akhilan",
+								"type": "DatasetReference"
+							},
+							"name": "CustomerDimensionSource"
+						},
+						{
+							"dataset": {
+								"referenceName": "azure_sql_transactions_dimension_id_and_pincode_table",
+								"type": "DatasetReference"
+							},
+							"name": "transactionsSource"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "azure_sql_fact_table_metric_products_sold_per_pincode",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "join1"
+						},
+						{
+							"name": "aggregate1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          customer_id as string,",
+						"          pincode as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> CustomerDimensionSource",
+						"source(output(",
+						"          customer_id as string,",
+						"          quantity as integer",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> transactionsSource",
+						"transactionsSource, CustomerDimensionSource join(transactionsSource@customer_id == CustomerDimensionSource@customer_id,",
+						"     joinType:'inner',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> join1",
+						"join1 aggregate(groupBy(pincode),",
+						"     quantity = sum(quantity)) ~> aggregate1",
+						"aggregate1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/azure_sql_customer_dimension_table_akhilan')]",
+				"[concat(variables('factoryId'), '/datasets/azure_sql_transactions_dimension_id_and_pincode_table')]",
+				"[concat(variables('factoryId'), '/datasets/azure_sql_fact_table_metric_products_sold_per_pincode')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/transaction_dimension_custId_and_pincode_dataflow')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "azure_sql_transactions_table",
+								"type": "DatasetReference"
+							},
+							"name": "transactionsSource"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "azure_sql_transactions_dimension_id_and_pincode_table",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "select1"
+						},
+						{
+							"name": "cast1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          customer_id as string,",
+						"          product_id as string,",
+						"          quantity as string,",
+						"          transaction_date as string,",
+						"          transaction_id as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> transactionsSource",
+						"transactionsSource select(mapColumn(",
+						"          customer_id,",
+						"          quantity",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select1",
+						"select1 cast(output(",
+						"          quantity as integer",
+						"     ),",
+						"     errors: true) ~> cast1",
+						"cast1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/azure_sql_transactions_table')]",
+				"[concat(variables('factoryId'), '/datasets/azure_sql_transactions_dimension_id_and_pincode_table')]"
 			]
 		},
 		{
@@ -500,6 +928,99 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/dataflows/customer_dimension_id_and_pincode_dataflow')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/metric_orders_per_pincode_pipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Metric orders per pincode Data Flow",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "metric_orders_per_pincode_dataflow",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"CustomerDimensionSource": {},
+									"transactionsSource": {},
+									"sink1": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/metric_orders_per_pincode_dataflow')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/transaction_dimension_custId_and_pincode_pipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "transaction dimension Data flow",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "transaction_dimension_custId_and_pincode_dataflow",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"transactionsSource": {},
+									"sink1": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/transaction_dimension_custId_and_pincode_dataflow')]"
 			]
 		}
 	]
