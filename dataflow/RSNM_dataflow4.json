@@ -1,0 +1,96 @@
+{
+	"name": "RSNM_dataflow4",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "azure_sql_transactions_table",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				},
+				{
+					"dataset": {
+						"referenceName": "RSNM_ContactLenses_Input",
+						"type": "DatasetReference"
+					},
+					"name": "source2"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "join1"
+				},
+				{
+					"name": "derivedColumn1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          customer_id as string,",
+				"          product_id as string,",
+				"          quantity as string,",
+				"          transaction_date as string,",
+				"          transaction_id as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source1",
+				"source(output(",
+				"          {Unnamed: 0} as string,",
+				"          id as string,",
+				"          image_url as string,",
+				"          image_url_suffix as string,",
+				"          product_url as string,",
+				"          occasion as string,",
+				"          brand_name as string,",
+				"          brand_name_en as string,",
+				"          model_name as string,",
+				"          prices as string,",
+				"          is_tbyb as string,",
+				"          tags as string,",
+				"          totalColorAvailable as string,",
+				"          is_ditto as string,",
+				"          classification as string,",
+				"          specifications as string,",
+				"          wishlistCount as string,",
+				"          purchaseCount as string,",
+				"          avgRating as string,",
+				"          totalNoOfRatings as string,",
+				"          hashtagList as string,",
+				"          offerName as string,",
+				"          clUsage as string,",
+				"          arModelAndroidUrl as string,",
+				"          arModelIOSUrl as string,",
+				"          arModelOriginalUrl as string,",
+				"          qty as string,",
+				"          subCollection as string,",
+				"          isCygnusEnabled as string,",
+				"          isCashbackApplicable as string,",
+				"          searchProductName as string,",
+				"          brand_logo as string,",
+				"          color as string,",
+				"          size as string,",
+				"          width as string,",
+				"          frameColorImage as string,",
+				"          subCollectionId as string,",
+				"          isCombo as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source2",
+				"source1, source2 join(product_id == id,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join1",
+				"join1 derive() ~> derivedColumn1"
+			]
+		}
+	}
+}

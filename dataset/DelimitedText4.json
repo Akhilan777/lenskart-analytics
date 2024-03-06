@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "classic_sunglass_bestsellers_updated.csv",
+				"fileName": "Contact_Lenses_Cleaned.csv",
 				"container": "lenskart-analytics"
 			},
 			"columnDelimiter": ",",

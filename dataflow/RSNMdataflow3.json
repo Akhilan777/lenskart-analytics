@@ -1,0 +1,74 @@
+{
+	"name": "RSNMdataflow3",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText4",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "aggregate1"
+				},
+				{
+					"name": "sort1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          {Unnamed: 0} as short,",
+				"          id as integer,",
+				"          image_url as string,",
+				"          image_url_suffix as string,",
+				"          product_url as string,",
+				"          occasion as string,",
+				"          brand_name as string,",
+				"          brand_name_en as string,",
+				"          model_name as string,",
+				"          prices as string,",
+				"          is_tbyb as boolean,",
+				"          tags as string,",
+				"          totalColorAvailable as boolean,",
+				"          is_ditto as boolean,",
+				"          classification as string,",
+				"          specifications as string,",
+				"          wishlistCount as short,",
+				"          purchaseCount as integer,",
+				"          avgRating as double,",
+				"          totalNoOfRatings as string,",
+				"          hashtagList as string,",
+				"          offerName as string,",
+				"          clUsage as string,",
+				"          arModelAndroidUrl as string,",
+				"          arModelIOSUrl as string,",
+				"          arModelOriginalUrl as string,",
+				"          qty as integer,",
+				"          subCollection as string,",
+				"          isCygnusEnabled as boolean,",
+				"          isCashbackApplicable as boolean,",
+				"          searchProductName as string,",
+				"          brand_logo as string,",
+				"          color as string,",
+				"          size as string,",
+				"          width as string,",
+				"          frameColorImage as string,",
+				"          subCollectionId as string,",
+				"          isCombo as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source1 aggregate(groupBy(brand_name),",
+				"     Total_Purchase_Count = sum(purchaseCount)) ~> aggregate1",
+				"aggregate1 sort(desc(Total_Purchase_Count, false)) ~> sort1"
+			]
+		}
+	}
+}

@@ -1,0 +1,16 @@
+{
+	"name": "RSNM_ContactLenses_Input",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabaseLinkedService",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "RSNM",
+			"table": "RSNM_ContactLenses_Input"
+		}
+	}
+}
