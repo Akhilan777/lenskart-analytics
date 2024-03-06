@@ -1,0 +1,16 @@
+{
+	"name": "Hari_wishlist_qty_corelation",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "HariAzureSqlDatabase",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "hari",
+			"table": "wishlistqtycorelation"
+		}
+	}
+}
