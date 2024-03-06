@@ -1,0 +1,71 @@
+{
+	"name": "Statesdataflow",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable2",
+						"type": "DatasetReference"
+					},
+					"name": "storelocations"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable3",
+						"type": "DatasetReference"
+					},
+					"name": "result"
+				}
+			],
+			"transformations": [
+				{
+					"name": "aggregate"
+				},
+				{
+					"name": "convertingRatingtonumber"
+				},
+				{
+					"name": "filter"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          id as string,",
+				"          name as string,",
+				"          status as string,",
+				"          address as string,",
+				"          city as string,",
+				"          state as string,",
+				"          phone as string,",
+				"          email as string,",
+				"          openinghr as string,",
+				"          closinghr as string,",
+				"          Rating as string,",
+				"          Reviews as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> storelocations",
+				"convertingRatingtonumber aggregate(groupBy(state),",
+				"     {average-ratings} = iif(isNull(avg(NumericRating)),0.0,toFloat(avg(NumericRating)))) ~> aggregate",
+				"storelocations derive(NumericRating = toInteger(Rating)) ~> convertingRatingtonumber",
+				"aggregate filter({average-ratings} != 0.0) ~> filter",
+				"filter sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> result"
+			]
+		}
+	}
+}

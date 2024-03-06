@@ -1,0 +1,71 @@
+{
+	"name": "citydataflow",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable4",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable5",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "aggregate1"
+				},
+				{
+					"name": "filter1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          id as string,",
+				"          name as string,",
+				"          status as string,",
+				"          address as string,",
+				"          city as string,",
+				"          state as string,",
+				"          phone as string,",
+				"          email as string,",
+				"          openinghr as string,",
+				"          closinghr as string,",
+				"          Rating as string,",
+				"          Reviews as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source1",
+				"source1 derive(NumericRatings = toInteger(Rating)) ~> derivedColumn1",
+				"derivedColumn1 aggregate(groupBy(city),",
+				"     {average-rating} = iif(isNull(avg(NumericRatings)),0.0,toFloat(avg(NumericRatings)))) ~> aggregate1",
+				"aggregate1 filter({average-rating} != 0.0) ~> filter1",
+				"filter1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+			]
+		}
+	}
+}
