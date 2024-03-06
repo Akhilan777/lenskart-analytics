@@ -1,0 +1,9 @@
+{
+	"name": "lenskart-analytics-adf",
+	"location": "southindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "dde1635c-ad23-4a77-9f75-d791bfcf771e",
+		"tenantId": "2800c0a0-70e9-49be-8733-faeaa6aced99"
+	}
+}
