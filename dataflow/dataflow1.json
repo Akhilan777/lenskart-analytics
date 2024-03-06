@@ -1,0 +1,95 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText4",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText4",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				},
+				{
+					"dataset": {
+						"referenceName": "DelimitedText4",
+						"type": "DatasetReference"
+					},
+					"name": "sink2"
+				}
+			],
+			"transformations": [
+				{
+					"name": "aggregate1"
+				},
+				{
+					"name": "rank1"
+				},
+				{
+					"name": "aggregate2"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          id as integer,",
+				"          color as string,",
+				"          size as string,",
+				"          width as string,",
+				"          brand_name as string,",
+				"          model_name as string,",
+				"          tags as string,",
+				"          classification as string,",
+				"          wishlistCount as integer,",
+				"          purchaseCount1 as integer,",
+				"          avgRating as double,",
+				"          totalNoOfRatings as string,",
+				"          offerName as string,",
+				"          qty as short,",
+				"          subCollection as string,",
+				"          subCollectionId as string,",
+				"          searchProductName as string,",
+				"          productname1 as string,",
+				"          fullname as string,",
+				"          sellerlabel as string,",
+				"          productmodelname as string,",
+				"          frametype as string,",
+				"          productrating as string,",
+				"          purchasecount as string,",
+				"          wishlistcount1 as string,",
+				"          productquantity1 as string,",
+				"          type1 as string,",
+				"          offertext1 as string,",
+				"          brandname1 as string,",
+				"          subcategories1 as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source1 aggregate(groupBy(brand_name),",
+				"     AveragePurchase = ceil(avg(purchaseCount1))) ~> aggregate1",
+				"aggregate1 rank(desc(AveragePurchase, true),",
+				"     output(top_seller as long)) ~> rank1",
+				"source1 aggregate(groupBy(frametype),",
+				"     purchaseCount1 = ceil(avg(purchaseCount1))) ~> aggregate2",
+				"aggregate2 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink1",
+				"rank1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink2"
+			]
+		}
+	}
+}
