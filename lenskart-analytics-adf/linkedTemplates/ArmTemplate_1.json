@@ -13,71 +13,6 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/RSNM_dataflow1')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "azure_sql_transactions_table",
-								"type": "DatasetReference"
-							},
-							"name": "source1"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "RSNM_Transaction_Metric",
-								"type": "DatasetReference"
-							},
-							"name": "sink1"
-						}
-					],
-					"transformations": [
-						{
-							"name": "aggregate1"
-						},
-						{
-							"name": "sort1"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          customer_id as string,",
-						"          product_id as string,",
-						"          quantity as integer,",
-						"          transaction_date as string,",
-						"          transaction_id as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     format: 'table') ~> source1",
-						"source1 aggregate(groupBy(customer_id),",
-						"     No_Of_Transactions = count(transaction_id),",
-						"          Total_Quantity = sum(quantity)) ~> aggregate1",
-						"aggregate1 sort(desc(Total_Quantity, false)) ~> sort1",
-						"sort1 sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     deletable:false,",
-						"     insertable:true,",
-						"     updateable:false,",
-						"     upsertable:false,",
-						"     recreate:true,",
-						"     format: 'table',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
-					]
-				}
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/RSNM_dataflow2')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -240,17 +175,47 @@
 								"type": "DatasetReference"
 							},
 							"name": "sink2"
+						},
+						{
+							"dataset": {
+								"referenceName": "DelimitedText4",
+								"type": "DatasetReference"
+							},
+							"name": "sink3"
+						},
+						{
+							"dataset": {
+								"referenceName": "DelimitedText4",
+								"type": "DatasetReference"
+							},
+							"name": "sink4"
+						},
+						{
+							"dataset": {
+								"referenceName": "DelimitedText4",
+								"type": "DatasetReference"
+							},
+							"name": "sink5"
 						}
 					],
 					"transformations": [
 						{
-							"name": "aggregate1"
+							"name": "topBrands"
 						},
 						{
 							"name": "rank1"
 						},
 						{
-							"name": "aggregate2"
+							"name": "topFrames"
+						},
+						{
+							"name": "mostLovedColor"
+						},
+						{
+							"name": "topSizeSell"
+						},
+						{
+							"name": "likedBrands"
 						}
 					],
 					"scriptLines": [
@@ -290,19 +255,37 @@
 						"     validateSchema: false,",
 						"     ignoreNoFilesFound: false) ~> source1",
 						"source1 aggregate(groupBy(brand_name),",
-						"     AveragePurchase = ceil(avg(purchaseCount1))) ~> aggregate1",
-						"aggregate1 rank(desc(AveragePurchase, true),",
+						"     AveragePurchase = ceil(avg(purchaseCount1))) ~> topBrands",
+						"topBrands rank(desc(AveragePurchase, true),",
 						"     output(top_seller as long)) ~> rank1",
 						"source1 aggregate(groupBy(frametype),",
-						"     purchaseCount1 = ceil(avg(purchaseCount1))) ~> aggregate2",
-						"aggregate2 sink(allowSchemaDrift: true,",
+						"     purchaseCount1 = ceil(avg(purchaseCount1))) ~> topFrames",
+						"source1 aggregate(groupBy(color),",
+						"     purchaseCount1 = ceil(avg(purchaseCount1))) ~> mostLovedColor",
+						"source1 aggregate(groupBy(size),",
+						"     productname1 = ceil(avg(purchaseCount1))) ~> topSizeSell",
+						"source1 aggregate(groupBy(brand_name),",
+						"     avgRating = avg(avgRating)) ~> likedBrands",
+						"topFrames sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true) ~> sink1",
 						"rank1 sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> sink2"
+						"     skipDuplicateMapOutputs: true) ~> sink2",
+						"mostLovedColor sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> sink3",
+						"topSizeSell sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> sink4",
+						"likedBrands sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> sink5"
 					]
 				}
 			},
@@ -569,9 +552,7 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/RSNM_dataflow1')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/RSNM_pipeline2')]",
@@ -893,7 +874,10 @@
 								"datasetParameters": {
 									"source1": {},
 									"sink1": {},
-									"sink2": {}
+									"sink2": {},
+									"sink3": {},
+									"sink4": {},
+									"sink5": {}
 								}
 							},
 							"staging": {},
